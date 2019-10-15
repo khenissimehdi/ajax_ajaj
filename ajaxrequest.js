@@ -117,41 +117,36 @@ function AjaxRequest(config) {
     this.transport = GetXmlHttpObject() ;
 
     // Build response callback function
-    function myCallBack(result) {
-         
-            console.log(result);
-        
-    }
     // Closure for this
     var requestThis = this ;
     this.transport.onreadystatechange = function() {
 ////////////////////////////////////////////////////////////////////////////////
 // A ECRIRE
         // On complete (readyState == 4 or "complete")
-        if (this.transport.readyState == 4 ) {
+        if (requestThis.transport.readyState == 4 ) {
             // On success result (Response code == 200)
-            if (this.transport.status==200) {
+            if (requestThis.transport.status==200) {
                 // Check response expected mime type ('text', 'json' or 'xml')
                 var result = null ;
-               var  checker = this.transport.getResponseHeader("content-type") ;
+              
 
-                switch (checker) {
-                    case checker = "text/text":
-                        result =this.transport.responseText;
+                switch (requestThis.handleAs) {
+                    case "text":
+                        result =requestThis.transport.responseText;
                         break;
-                    case checker = "text/json":
-                        result =this.transport.responseText;
+                    case "json":
+                        result =JSON.parse(requestThis.transport.responseText);
                         break;
-                    case checker = "text/xml":
-                         result =this.transport.responseText;
+                    case "xml":
+                         result =requestThis.transport.responseXML;
                          break;
                 }
                 // Launch onSuccess callback with result parameter
-                myCallBack(result);
+                requestThis.onSuccess(result);
             }
             else {
                 // Response code != 200 => Launch onError with parameters status and response content
-                throw this.transport.statusText;
+                requestThis.onError(requestThis.statusText);
             }
         }
     }
@@ -161,21 +156,26 @@ function AjaxRequest(config) {
     // Iterate on parameters
     for (var i in this.parameters) {
         // Escape parameter value with encodeURIComponent()
+        var paramencode = encodeURIComponent(this.parameters[i]);
         // Store 'parameter_name=escaped_parameter_value' in array 'parameters'
-////////////////////////////////////////////////////////////////////////////////
-// A ECRIRE
+        parameters.push(i+'='+paramencode);
     }
     // Join escaped parameters with '&'
     var parametersString = parameters.join('&') ;
     if (this.method === 'get') {
-    // Request method is 'get'
+    // Request method is 'get'.
 ////////////////////////////////////////////////////////////////////////////////
 // A ECRIRE
+     this.transport.open(this.method,this.url+'?'+parametersString,this.asynchronous);
+     this.transport.send(null);
         // Open transport
         // Send request
     }
     else {
     // Request method is 'post'
+    this.transport.open(this.method,this.url ,this.asynchronous);
+    this.transport.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+    this.transport.send(parametersString);
 ////////////////////////////////////////////////////////////////////////////////
 // A ECRIRE
         // Open transport
