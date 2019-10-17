@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="fr">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <title>Suggestions de noms en AJAX</title>
+    </head>
+    <body>
+            <style type="text/css">
+            span.ingredient {
+                  color: #f00;
+                 }
+            </style>
+            <label for="name">Name  :
+
+            <input type="text" id="name" name="name" required
+                   minlength="4" maxlength="8" size="10">
+                </label>
+
+                <p>
+                    Suggestions : <span></span>
+                </p>
+            <script type='text/javascript' src='ajaxrequest.js'></script>
+            <script type='text/javascript'>
+             window.onload = function() {
+                 
+                    v_in = document.querySelector("input");
+                    v_in.oninput = function() {
+                        console.log(v_in.value);
+                    
+                    
+                        new AjaxRequest(
+                            {
+                                url        : "liste_artistes.php",
+                                method     : 'get',
+                                handleAs   : 'text',
+                                parameters : { q : v_in.value },
+                                onSuccess  : function(res) {
+                                        console.log(res)
+                                        v_span=document.querySelector("span").innerHTML = res;
+
+
+                                        /*
+                                        var li = document.createElement('li') ;
+                                        li.appendChild(document.createTextNode(res)) ;
+                                        //document.getElementById('test_results').appendChild(li);
+                                        */
+                                    },
+                                onError    : function(status, message) {
+                                        window.alert('Error ' + status + ': ' + message) ;
+                                    }
+                            }) ;
+                    }
+                }
+               
+        
+        // Création de la requête AJAX
+        
+            </script>
+            
+    </body>
+</html>
