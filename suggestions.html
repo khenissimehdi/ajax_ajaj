@@ -34,20 +34,21 @@
                                 method     : 'get',
                                 handleAs   : 'text',
                                 parameters : { q : v_in.value },
+                                
+                                cancel : function(res)
+                                {}
+                                ,
+                                
                                 onSuccess  : function(res) {
                                         console.log(res)
                                         v_span=document.querySelector("span").innerHTML = res;
-
-
-                                        /*
-                                        var li = document.createElement('li') ;
-                                        li.appendChild(document.createTextNode(res)) ;
-                                        //document.getElementById('test_results').appendChild(li);
-                                        */
                                     },
                                 onError    : function(status, message) {
                                         window.alert('Error ' + status + ': ' + message) ;
-                                    }
+                                    },
+                                    
+                                    
+                                
                             }) ;
                     }
                 }

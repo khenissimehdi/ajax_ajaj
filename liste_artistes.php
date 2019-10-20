@@ -1,5 +1,6 @@
 <?php
 include_once 'autoload.include.php';
+
 $motif='%'.$_GET['q'].'%';
 
 $stmt = MyPDO::getInstance()->prepare(<<<SQL
@@ -14,13 +15,18 @@ $stmt->setFetchMode (PDO::FETCH_ASSOC);
 $stmt->execute([':m'=>$motif]);
 $artists = $stmt->fetchall();
 //ar_dump($artists);
-header('Content-Type: text/plain') ;
-echo $_GET['q'] . " => ";
+
+
+
+if (isset($_GET['q'])) {
+    usleep(rand(0, 20) * 100000) ;
+    header('Content-Type: text/plain') ;
+    echo $_GET['q'] . " => ";
 foreach ($artists as $ligne) {
     echo $ligne['name'] . "\n"."<br>";
 }
 
-
+}
 
 
 /*
