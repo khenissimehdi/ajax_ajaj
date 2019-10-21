@@ -22,22 +22,21 @@
             <script type='text/javascript' src='ajaxrequest.js'></script>
             <script type='text/javascript'>
              window.onload = function() {
-                 
+                    req = null;
                     v_in = document.querySelector("input");
                     v_in.oninput = function() {
                         console.log(v_in.value);
-                    
-                    
-                        new AjaxRequest(
+                        if (req!=null) {
+                            req.cancel();
+                        }
+                        req = new AjaxRequest(
                             {
                                 url        : "liste_artistes.php",
                                 method     : 'get',
                                 handleAs   : 'text',
-                                parameters : { q : v_in.value },
+                                parameters : { q : v_in.value, wait : 1 },
                                 
-                                cancel : function(res)
-                                {}
-                                ,
+
                                 
                                 onSuccess  : function(res) {
                                         console.log(res)

@@ -1,0 +1,51 @@
+<title>TEST HTML REQUEST</title>
+<body><h1>HI AM TEST </h1></body>
+
+
+<script type="text/javascript">
+function myCallBack(result) {
+        
+            console.log(result);
+}
+
+const xhr = new XMLHttpRequest();
+
+xhr.onreadystatechange = function()
+{
+    if (xhr.readyState== 4 )
+    {
+        if(xhr.status==200)
+        {
+            var result = null ;
+               var  checker = xhr.getResponseHeader("content-type") ;
+
+                switch (checker) {
+                    case checker = "text/text":
+                        result =xhr.responseText;
+                        break;
+                    case checker = "text/html":
+                        result =xhr.responseText;
+                        break;
+                    case checker = "text/xml":
+                         result =xhr.responseText;
+                         break;
+                }
+                myCallBack(result);
+
+        }
+        else {
+                // Response code != 200 => Launch onError with parameters status and response content
+                throw xhr.statusText
+            }
+    }
+};
+
+
+
+
+
+xhr.open('get','DOM.kk',true);
+xhr.send()
+
+
+</script>

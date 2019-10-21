@@ -144,11 +144,7 @@ function AjaxRequest(config) {
                 // Launch onSuccess callback with result parameter
                 requestThis.onSuccess(result);
             }
-            else if(this.transport && this.transport.readyState != 4)
-            {
-                //console.log("hello");
-                requestThis.cancel(result);
-            }
+          
             
             else {
                 // Response code != 200 => Launch onError with parameters status and response content

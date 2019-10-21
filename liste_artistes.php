@@ -1,6 +1,11 @@
 <?php
 include_once 'autoload.include.php';
 
+// On demande à PHP de se reposer quelques secondes pour introduire une latence
+if (isset($_REQUEST['wait'])) {
+    usleep(rand(0, 20) * 100000) ;
+}
+
 $motif='%'.$_GET['q'].'%';
 
 $stmt = MyPDO::getInstance()->prepare(<<<SQL
@@ -19,7 +24,6 @@ $artists = $stmt->fetchall();
 
 
 if (isset($_GET['q'])) {
-    usleep(rand(0, 20) * 100000) ;
     header('Content-Type: text/plain') ;
     echo $_GET['q'] . " => ";
 foreach ($artists as $ligne) {
