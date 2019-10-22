@@ -14,7 +14,5 @@ SQL
 $stmt->setFetchMode (PDO::FETCH_ASSOC);
 $stmt->execute([":m"=>$motif]);
 $songs = $stmt->fetchall();
-
-echo '<pre>';
-print_r(json_encode($songs,JSON_PRETTY_PRINT));
-echo '</pre>';
+header('Content-Type: application/json') ;
+echo json_encode($songs);

@@ -51,22 +51,20 @@ $Album .="</select>";
 $p->appendContent($Album);
 
 $p->appendContent(<<<HTML
-    <div id="titres"></div>
+    <div id="titres"><p>lol</p></div>
 HTML
 );
 
 $js = <<< HTML
-   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+   <script type='text/javascript' src='ajaxrequest.js'></script>
+   
     <script type='text/javascript'>
+   
         window.onload = function() {
-        /*
-        var sel = "genre";
-        console.log(document.querySelector("select#"+sel).options.length);
-    }
-    */
-    var sel = "genre";
-    var contenu ='<option value="27">lol</option>';
-    document.querySelector("select#"+sel).append(contenu);
+            charge("artistes.php", "15","art");
+            //ajouterOption("genre","lol","27");
+            
 
             function viderSelect(sel){
                 var taille = document.querySelector("select#"+sel).options.length;
@@ -75,18 +73,59 @@ $js = <<< HTML
                     document.querySelector("select#"+sel).options[i]=null;
                 }
             }
-/*
+
             function ajouterOption(sel, txt, val)
             {
-                document.querySelector("select#"+sel).append(('<option>', { 
-        value: val,
-        text : txt
-                }));
-
-
+                var o = new Option(txt, val);
+                document.querySelector("select#"+sel).add(o);
 
             }
-            */
+            function viderNoeud(noeud)
+            {
+                var a=document.getElementsByTagName(noeud)[0].id;
+                var box = document.getElementById(a);
+            while (box.firstChild) {
+                box.removeChild(box.firstChild);
+                    }
+            }
+            
+            function charge(url, str,sel) {
+                req=null;
+                sel2=sel;
+                req = new AjaxRequest(
+                            {
+                                url        : url,
+                                method     : 'get',
+                                handleAs   : 'json',
+                                parameters : { q : str },
+                                
+
+                                
+                                onSuccess  : function(res) {
+                                        //var a = res[0];
+                                        //console.log(res[0]['id']);
+                                        for (var i = 0 ; i<res.length;i++)
+                                        {
+                                           
+                                            console.log(res[i]['id']);
+                                            ajouterOption(sel2, res[i]['txt'], res[i]['id']);
+
+                                        }
+                                        //ajouterOption(sel, txt, val)
+                                        //v_span=document.querySelector("span").innerHTML = res;
+                                    },
+                                onError    : function(status, message) {
+                                        window.alert('Error ' + status + ': ' + message) ;
+                                    },
+                                    
+                                    
+                                
+                            }) ;
+
+
+                
+                        }
+            
         }
     </script>
 HTML;

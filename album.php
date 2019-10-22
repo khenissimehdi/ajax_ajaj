@@ -14,6 +14,5 @@ $stmt->setFetchMode (PDO::FETCH_ASSOC);
 $stmt->execute([':m'=>$motif]);
 $albums = $stmt->fetchall();
 
-echo '<pre>';
-print_r(json_encode($albums,JSON_PRETTY_PRINT));
-echo '</pre>';
+header('Content-Type: application/json') ;
+echo json_encode($albums);
