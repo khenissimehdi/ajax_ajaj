@@ -22,7 +22,7 @@ HTML;
 for ($i=1;$i<$size;$i++)
 {
     $Style.= <<<HTML
-        <option  value="{$i}">{$genres[$i]['name']}</option>
+        <option  value="{$genres[$i]['id']}">{$genres[$i]['name']}</option>
 HTML;
 }
 
@@ -66,18 +66,24 @@ $js = <<< HTML
 
             document.getElementById("genre").addEventListener('click',function(e)
             {
-                viderSelect("album");
+               
                 charge("artistes.php",document.getElementById("genre").value,"art");
+                var taille = document.querySelector("select#"+"art").options.length;
+                console.log(taille)
             });
             document.getElementById("art").addEventListener('click',function(e)
             {
+                
 
-                charge("artistes.php",document.getElementById("genre").value,"art");
+                charge("album.php",document.getElementById("art").value,"alb");
+
+                
             });
             //charge("artistes.php", "15","art");
             //ajouterOption("genre","lol","27");
             
-
+            //var taille = document.querySelector("select#"+"art").options.length;
+            //console.log(taille)
             function viderSelect(sel){
                 var taille = document.querySelector("select#"+sel).options.length;
 
