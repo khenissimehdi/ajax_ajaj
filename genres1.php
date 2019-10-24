@@ -62,7 +62,19 @@ $js = <<< HTML
     <script type='text/javascript'>
    
         window.onload = function() {
-            charge("artistes.php", "15","art");
+
+
+            document.getElementById("genre").addEventListener('click',function(e)
+            {
+                viderSelect("album");
+                charge("artistes.php",document.getElementById("genre").value,"art");
+            });
+            document.getElementById("art").addEventListener('click',function(e)
+            {
+
+                charge("artistes.php",document.getElementById("genre").value,"art");
+            });
+            //charge("artistes.php", "15","art");
             //ajouterOption("genre","lol","27");
             
 
@@ -103,13 +115,15 @@ $js = <<< HTML
                                 
                                 onSuccess  : function(res) {
                                         //var a = res[0];
-                                        //console.log(res[0]['id']);
+                                        //console.log(res[0]['id']);*
+                                        viderSelect(sel);
                                         for (var i = 0 ; i<res.length;i++)
                                         {
                                            
                                             console.log(res[i]['id']);
-                                            ajouterOption(sel2, res[i]['txt'], res[i]['id']);
 
+                                            ajouterOption(sel2, res[i]['txt'], res[i]['id']);
+                                           
                                         }
                                         //ajouterOption(sel, txt, val)
                                         //v_span=document.querySelector("span").innerHTML = res;
