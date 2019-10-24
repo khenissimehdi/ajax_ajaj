@@ -51,7 +51,7 @@ $Album .="</select>";
 $p->appendContent($Album);
 
 $p->appendContent(<<<HTML
-    <div id="titres"><p>lol</p></div>
+    <div id="song"><p>test</p></div>
 HTML
 );
 
@@ -63,41 +63,47 @@ $js = <<< HTML
    
         window.onload = function() {
 
-
-            document.getElementById("genre").addEventListener('click',function(e)
+            document.getElementById("alb").addEventListener('change',function(e)
+            {
+                
+               
+                charge("song.php",document.getElementById("alb").value,"song");
+            });
+           
+            document.getElementById("genre").addEventListener('change',function(e)
             {
                
                 charge("artistes.php",document.getElementById("genre").value,"art");
-                var taille = document.querySelector("select#"+"art").options.length;
-                console.log(taille)
+                
             });
-            document.getElementById("art").addEventListener('click',function(e)
+            
+            document.getElementById("art").addEventListener('change',function(e)
             {
                 
-
+                
                 charge("album.php",document.getElementById("art").value,"alb");
 
                 
             });
-            //charge("artistes.php", "15","art");
-            //ajouterOption("genre","lol","27");
             
-            //var taille = document.querySelector("select#"+"art").options.length;
-            //console.log(taille)
             function viderSelect(sel){
-                var taille = document.querySelector("select#"+sel).options.length;
+                
 
-                for(var i = 1 ; i < taille ; i++){
-                    document.querySelector("select#"+sel).options[i]=null;
+                
+                var box = document.getElementById(sel);
+                while  (box.firstChild) {
+                box.removeChild(box.firstChild);
                 }
+
             }
+            
 
             function ajouterOption(sel, txt, val)
             {
                 var o = new Option(txt, val);
-                document.querySelector("select#"+sel).add(o);
-
+                document.querySelector('#'+sel).add(o);
             }
+
             function viderNoeud(noeud)
             {
                 var a=document.getElementsByTagName(noeud)[0].id;
@@ -106,6 +112,7 @@ $js = <<< HTML
                 box.removeChild(box.firstChild);
                     }
             }
+            
             
             function charge(url, str,sel) {
                 req=null;
@@ -120,19 +127,37 @@ $js = <<< HTML
 
                                 
                                 onSuccess  : function(res) {
-                                        //var a = res[0];
-                                        //console.log(res[0]['id']);*
+                                   
+                                        
+                                        console.log(sel)
+                                        if (sel == "song")
+                                        {
+                                            viderNoeud("div");
+                                            
+                                            //document.querySelector("div").innerHTML = "<h1>{res[1]['name']}</h1>"
+                                            var opt = document.getElementById("alb").options[document.getElementById("alb").selectedIndex];
+                                                document.querySelector("div").innerHTML ="<h1>"+opt.text+"</h1>";
+                                            for (var i = 0 ; i<res.length;i++)
+                                            {
+                                               
+                                                console.log(res[i]['name'])
+                                                document.querySelector("div").innerHTML += "<li>"+res[i]['num']+"-"+res[i]['name']+"-"+res[i]['duration']+"</l1>";
+
+                                            }
+                                            
+                                        }
+                                        else{
                                         viderSelect(sel);
                                         for (var i = 0 ; i<res.length;i++)
                                         {
                                            
-                                            console.log(res[i]['id']);
+                                            console.log(res[i]['id'],res[i]['txt']);
 
                                             ajouterOption(sel2, res[i]['txt'], res[i]['id']);
                                            
                                         }
-                                        //ajouterOption(sel, txt, val)
-                                        //v_span=document.querySelector("span").innerHTML = res;
+                                        }
+                                      
                                     },
                                 onError    : function(status, message) {
                                         window.alert('Error ' + status + ': ' + message) ;
